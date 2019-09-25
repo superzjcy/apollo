@@ -3,13 +3,13 @@ package com.ctrip.framework.apollo.portal.constant;
 public interface PermissionType {
 
   /**
-   * system level permission
+   * 系统级别权限
    */
   String CREATE_APPLICATION = "CreateApplication";
   String MANAGE_APP_MASTER = "ManageAppMaster";
 
   /**
-   * APP level permission
+   * APP级别权限
    */
 
   String CREATE_NAMESPACE = "CreateNamespace";
@@ -22,7 +22,7 @@ public interface PermissionType {
   String ASSIGN_ROLE = "AssignRole";
 
   /**
-   * namespace level permission
+   * Namespace级别权限
    */
 
   String MODIFY_NAMESPACE = "ModifyNamespace";

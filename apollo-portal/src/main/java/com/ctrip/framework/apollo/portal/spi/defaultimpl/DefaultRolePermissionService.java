@@ -154,28 +154,36 @@ public class DefaultRolePermissionService implements RolePermissionService {
      * Check whether user has the permission
      */
     public boolean userHasPermission(String userId, String permissionType, String targetId) {
+
+        // 根据权限类型和targetId查询权限
         Permission permission =
                 permissionRepository.findTopByPermissionTypeAndTargetId(permissionType, targetId);
         if (permission == null) {
             return false;
         }
 
+        // 超级用户则具有所有权限
         if (isSuperAdmin(userId)) {
             return true;
         }
 
+        // 查询用户的角色列表
         List<UserRole> userRoles = userRoleRepository.findByUserId(userId);
         if (CollectionUtils.isEmpty(userRoles)) {
             return false;
         }
 
+        // 角色Id去重
         Set<Long> roleIds =
             userRoles.stream().map(UserRole::getRoleId).collect(Collectors.toSet());
+
+        // 查询RolePemission表
         List<RolePermission> rolePermissions = rolePermissionRepository.findByRoleIdIn(roleIds);
         if (CollectionUtils.isEmpty(rolePermissions)) {
             return false;
         }
 
+        // 检查用户角色对应权限的id和需要的权限对应的id是否匹配
         for (RolePermission rolePermission : rolePermissions) {
             if (rolePermission.getPermissionId() == permission.getId()) {
                 return true;
